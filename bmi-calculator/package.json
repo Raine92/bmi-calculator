@@ -1,0 +1,16 @@
+{
+  "name": "bmi-calculator",
+  "version": "1.0.0",
+  "description": "A simple BMI calculator web application.",
+  "main": "src/js/app.js",
+  "scripts": {
+    "start": "live-server ."
+  },
+  "keywords": [
+    "BMI",
+    "calculator",
+    "health"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
