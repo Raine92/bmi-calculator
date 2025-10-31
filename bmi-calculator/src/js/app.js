@@ -6,15 +6,45 @@ function calculateBMI(weight, height) {
     return `Your BMI is ${bmi.toFixed(2)}`;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("bmi-form");
-    const result = document.getElementById("result");
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('bmi-form');
+  const heightInput = document.getElementById('height');
+  const weightInput = document.getElementById('weight');
+  const resultEl = document.getElementById('result');
+  const resetBtn = document.getElementById('reset-btn');
 
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const weight = parseFloat(document.getElementById("weight").value);
-        const height = parseFloat(document.getElementById("height").value);
-        const bmiResult = calculateBMI(weight, height);
-        result.textContent = bmiResult;
-    });
+  function classify(bmi){
+    if (bmi < 18.5) return { cls: 'under', text: 'Underweight' };
+    if (bmi < 25)   return { cls: 'normal', text: 'Normal weight' };
+    if (bmi < 30)   return { cls: 'over', text: 'Overweight' };
+    return { cls: 'obese', text: 'Obesity' };
+  }
+
+  function showResult(text, cssClass = '') {
+    resultEl.className = `result show ${cssClass}`.trim();
+    resultEl.innerHTML = text;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const h = parseFloat(heightInput.value);
+    const w = parseFloat(weightInput.value);
+
+    if (!h || h <= 0 || !w || w <= 0) {
+      showResult('<span class="value">Invalid input</span><div>Enter positive height and weight.</div>', 'error');
+      return;
+    }
+
+    const bmi = w / (h * h);
+    const bmiStr = bmi.toFixed(2);
+    const cat = classify(bmi);
+
+    showResult(`<span class="value">${bmiStr}</span><div>${cat.text}</div>`, cat.cls);
+  });
+
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    resultEl.className = 'result';
+    resultEl.textContent = '';
+  });
 });
